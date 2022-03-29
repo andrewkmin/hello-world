@@ -1,0 +1,41 @@
+// We require the Hardhat Runtime Environment explicitly here. This is optional
+// but useful for running the script in a standalone fashion through `node <script>`.
+//
+// When running the script with `npx hardhat run <script>` you'll find the Hardhat
+// Runtime Environment's members available in the global scope.
+const hre = require("hardhat");
+
+// Not necessarily required, but could be helpful if you want to separately handle constructor arguments
+const constructorArgs = require("./deployArguments");
+
+async function main() {
+  // Hardhat always runs the compile task when running scripts with its command
+  // line interface.
+  //
+  // If this script is run directly using `node` you may want to call compile
+  // manually to make sure everything is compiled
+  // await hre.run('compile');
+
+  // We get the contract to deploy; this is the name of whichever contract you'd like to deploy
+  const Contract = await hre.ethers.getContractFactory("Contract");
+
+  console.log(constructorArgs); // optional
+
+  const contract = await Contract.deploy(
+    // Feed in your args
+    constructorArgs[0],
+  );
+
+  await contract.deployed();
+
+  console.log("Contract deployed to:", contract.address);
+}
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
