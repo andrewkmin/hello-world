@@ -1,0 +1,2 @@
+# storage 🗃
+ipfs, arweave
